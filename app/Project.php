@@ -18,10 +18,10 @@ class Project extends Model
         'user_id', 'name', 'slug', 'desc', 'duedate', 'completed',
     ];
 
-    public function setDuedateAttribute($date)
-    {
-    	$this->attribute['duedate'] = Carbon::parse($date);
-    }
+    // public function setDuedateAttribute($date)
+    // {
+    // 	$this->attribute['duedate'] = Carbon::parse($date);
+    // }
 
     public function user()
     {

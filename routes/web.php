@@ -12,16 +12,18 @@
 */
 
 Route::get('/', 'HomeController@index');
+
 Route::group(['middleware' => 'auth'], function(){
 	Route::resource('substasks', 'SubstaskController');
 	Route::resource('tasks', 'TaskController');
 	Route::resource('projects', 'ProjectController');
+	Route::resource('test', 'TestController');
 });
 
 Auth::routes();
 
-Route::get('/logout', 'LoginController@destroy');
-
+Route::get('logout', 'HomeController@destroy');
+Route::post('simpan', 'ProjectController@simpan');
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');

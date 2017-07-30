@@ -36,11 +36,4 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-
-    public function destroy()
-    {
-        auth()->logout();
-
-        return redirect()->home();
-    }
 }

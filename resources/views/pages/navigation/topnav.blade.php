@@ -30,14 +30,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                   {{--  <li><a href="{{ url('logout') }}">Logout</a></li>
-                    --}} 
-                    <li>
-                        <form action="{{ url('logout') }}" method="post">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="btn btn-default btn-flat">Logout</button>
-                        </form>
-                    </li>
+                    <li><a href="{{ url('logout') }}">Logout</a></li>
                 </ul>
             </li>
             @else

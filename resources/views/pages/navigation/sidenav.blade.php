@@ -1,5 +1,5 @@
 <nav>
-    <div id="sidenav" class="sidebar sidebar-hidden z-index1050 text-capitalize hidden-xs text-left">
+    <div id="sidenav" class="sidebar sidebar-hidden z-index1050 text-capitalize hidden-xs text-left margin-top-50">
       <ul class="nav montserrat text-uppercase">
         <li class="text-center"><a href="#"><h4 class="lato fw500 text-white text-lowercase">24<span class="fw700">h<i class="fa fa-clock-o"></i>urs&nbsp;<sup><em class=""><span class="text-cyan">beta</span></em></sup></span> <span class="sr-only">(current)</span></h4></a></li>
         @if(Auth::check())
@@ -8,7 +8,7 @@
                 {{ $user->name }}&nbsp;<i class="fa fa-male pull-right text-light-grey line-height-2em"></i>
             </a>
             <ul class="nav bg-light-grey hidden">
-                <li class=""><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                <li class=""><a href="{{ url('logout') }}">Logout</a></li>
                 {{--<li><a href="{{ url('/clients/edit') }}">Edit Profile</a></li>--}}
             </ul>
         </li>
@@ -18,8 +18,8 @@
                 <i class="fa fa-lock pull-right text-light-grey line-height-2em"></i>
             </a>
             <ul class="nav bg-light-grey hidden">
-                <li><a href="{{ url('/auth/login') }}">Login</a></li>
-                <li><a href="{{ url('/auth/register') }}">Register</a></li>
+                <li><a href="{{ url('login') }}">Login</a></li>
+                <li><a href="{{ url('register') }}">Register</a></li>
             </ul>
         </li>
         @endif
