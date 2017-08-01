@@ -10,7 +10,7 @@
 <script src="{{ asset("assets/datepicker/bootstrap-datepicker.js") }}"></script>
 <script type="text/javascript">
      //Date picker
-    $('#datepicker').datepicker({
+    $('.datepicker').datepicker({
       	format: 'yyyy-mm-dd',
       	autoclose: true
     });

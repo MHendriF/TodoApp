@@ -22,16 +22,13 @@ class ProjectController extends Controller
         $projects = Auth::user()->projects()->orderby('created_at')->get();
         $currenttime = Carbon::now()->format('h:i a');
         $today = Carbon::now()->formatlocalized('%a %d %b %y');
-        return view('pages.projects.home', compact('projects', 'today', 'currenttime', 'user'));
+        $projectsTrashed = Auth::user()->projects()->onlyTrashed()->get();
+        return view('pages.projects.home', compact('projects', 'today', 'currenttime', 'user', 'projectsTrashed'));
     }
 
     public function create()
     {
-        // $user = Auth::user();
-        // $projects = Auth::user()->projects()->orderby('created_at')->get();
-        // $currenttime = Carbon::now()->format('h:i a');
-        // $today = Carbon::now()->formatlocalized('%a %d %b %y');
-        // return view('pages.projects.home', compact('projects', 'today', 'currenttime', 'user'));
+
     }
 
     public function store(ProjectRequest $request)
@@ -39,8 +36,6 @@ class ProjectController extends Controller
         if($request->ajax())
         {
             $slug = Str::slug($request->name);
-            //$date = Carbon::now()->toDateString();
-
             Auth::user()->projects()->create([
                 'name' => $request->name,
                 'slug' => $slug,
@@ -51,10 +46,7 @@ class ProjectController extends Controller
             $response = [
                 'msg' => 'Awesome! close this modal window by clicking top right corner.',
             ];
-
             return Response::json($response);
-            //dd($request->all());
-            
         }
         else
         {
@@ -67,7 +59,7 @@ class ProjectController extends Controller
                 'duedate' => $request->duedate
             ]);
 
-            return redirect('projects')->with('success', 'Project' . ucwords($request->name) . ' has been successfully created');
+            return redirect('projects')->with('success', 'Project ' . ucwords($request->name) . ' has been successfully created');
 
         }
 
@@ -75,40 +67,129 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        //
+        // $user = Auth::user();
+        // $projects = Auth::user()->projects()->orderby('created_at')->get();
+        // $currenttime = Carbon::now()->format('h:i a');
+        // $today = Carbon::now()->formatlocalized('%a %d %b %y');
+        // $projectsTrashed = Auth::user()->projects()->onlyTrashed()->get();
+        // $tasks = $project->tasks()->orderby('created_at')->get();
+        // return view('pages.projects.show', compact('projects', 'today', 'currenttime', 'tasks', 'user'));
+        return "testis";
     }
 
-    public function edit(Project $project)
+    public function edit(Project $project, Request $request)
     {
-        //
+        if($request->ajax())
+        {
+            $response = [
+                'id' => $project->id,
+                'projectslug' => $project->id,
+                'name' => $project->name,
+                'desc' => $project->desc,
+                'duedate' => $project->duedate
+            ];
+
+            return Response::json($response);
+        }
+        else
+        {
+            $projects = Auth::user()->projects()->orderby('created_at')->get();
+            $currenttime = Carbon::now()->format('h:i a');
+            $today = Carbon::now()->formatlocalized('%a %d %b %y');
+            return view('pages.projects.home', compact('projects', 'today', 'currenttime', 'user'));
+        }
     }
 
-    public function update(Request $request, Project $project)
+    public function update(Project $project, ProjectRequest $request)
     {
-        //
+        if($request->ajax())
+        {
+            $slug = Str::slug($request->name);
+            $project->update([
+                'name' => $request->name,
+                'slug' => $slug,
+                'desc' => $request->desc,
+                'duedate' => $request->duedate
+            ]);
+
+            $response = [
+                'msg' => 'Awesome! close this modal window by clicking top right corner.',
+            ];
+            return Response::json($response);
+        }
+        else
+        {
+             $slug = Str::slug($request->name);
+            $project =  Project::find($request->id);
+            $project->name = $request->name;
+            $project->slug = $slug;
+            $project->desc = $request->desc;
+            $project->duedate = $request->duedate;
+            $project->save();
+
+            return redirect('projects')->with('success', 'Project ' . ucwords($request->name) . ' has been successfully updated');
+        }
+    }
+
+    public function completed(Project $project)
+    {
+        if($project->completed == false)
+        {
+            $project->completed = true;
+            $project->update(['completed' => $project->completed]);
+            return redirect('projects')->with('success', 'Good Job Project marked as done!');
+
+        }
+        else
+        {
+            $project->completed = false;
+            $project->update(['completed' => $project->completed]);
+            return redirect('projects')->with('success', 'Project status changed to panding!');
+        }
+    }
+
+    public function hide(Project $project)
+    {
+        $project->delete();
+        return redirect()->back()->with('success', 'Project ' . $project->name . ' has been successfully hidden');
+    }
+
+    public function trashed()
+    {
+        $user = Auth::user();
+        $projects = Auth::user()->projects()->orderby('created_at')->get();
+        $currenttime = Carbon::now()->format('h:i a');
+        $today = Carbon::now()->formatlocalized('%a %d %b %y');
+        $projectsTrashed = Auth::user()->projects()->onlyTrashed()->get();
+        
+        return view('pages.projects.trashed', compact('projects', 'today', 'currenttime', 'user', 'projectsTrashed'));
+    }
+
+    public function restoreall()
+    {
+        Auth::user()->projects()->onlyTrashed()->restore();
+        return redirect('projects')->with('success', 'All trashed projects restored.');
+    }
+
+    public function restore(Project $project)
+    {
+        $project->restore();
+        return redirect('projects/trashed')->with('success', 'Project ' . $project->name . ' has been successfully restored');
+    }
+
+    public function deleteforever(Project $project)
+    {
+        $project->forceDelete();
+        return redirect('projects/trashed')->with('success', 'Project ' . $project->name . ' has been successfully deleted');
     }
 
     public function destroy(Project $project)
     {
-        //
+        
     }
 
     public function simpan(Request $request)
     {
-        //Test::create($request->all());
-        // $input = Request::all();
-        // Test::create($input);
-        // return redirect('projects');
-
-         // $post = new Test();
-         //    $post->name = $request->name;
-         //    $post->slug = $request->slug;
-         //    $post->duedate = $request->duedate;
-         //    $post->save();
-         //    return response()->json($post);
-
-        //return Response::json($request->all());
-
         if($request->ajax())
         {
             Test::create($request->all());

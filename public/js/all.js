@@ -31793,10 +31793,12 @@ $('document').ready(function(){
             var name = form.find('input[name=name]').val();
             var desc = form.find('textarea[name=desc]').val();
             var duedate = form.find('input[name=duedate]').val();
+            // var projectslug = $('.edit').parent('form:first').find('input[name=projectslug]').val();
             var projectslug = $('.edit').parent('form:first').find('input[name=projectslug]').val();
             var url = form.attr('action');
             console.log(url);
             var _method = form.find('input[name=_method]').val();
+            // console.log("projectslug detected is:" + projectslug);
             console.log("projectslug detected is:" + projectslug);
             var target = form.find('.success');
             // jQuery.noConflict();
@@ -31804,6 +31806,7 @@ $('document').ready(function(){
                 url: url,
                 type: 'PATCH',
                 dataType: 'json',
+                // data: {id:id, name:name, desc:desc, duedate:duedate, _token:_token, _method: _method}
                 data: {name:name, desc:desc, duedate:duedate, _token:_token, _method: _method}
               })
               .done(function(data) {
@@ -31905,6 +31908,7 @@ $('document').ready(function(){
         var form = $(".editmodalwindow").find('form:first');
         var url = form.attr('action');
         console.log("form default url is " + url);
+        // var projectslug = response['projectslug'];
         var projectslug = response['projectslug'];
         var host = window.location.host;
         var pathname = window.location.pathname;
