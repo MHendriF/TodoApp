@@ -15,7 +15,7 @@ class Task extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'project_id', 'name', 'slug', 'desc', 'duedate', 'completed',
+        'name', 'slug', 'desc', 'duedate', 'completed',
     ];
 
     // public function setDuedateAttribute($date)
@@ -25,16 +25,18 @@ class Task extends Model
 
     public function user()
     {
-    	return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User');
     }
 
     public function project()
     {
-    	return $this->belongsTo('App\Project');
+        return $this->belongsTo('App\Project');
+        // return $this->belongsTo('App\Project', 'project_id');
     }
 
-	public function subtasks()
+    public function subtasks()
     {
-    	return $this->hasMany('App\Subtask');
+        return $this->hasMany('App\Subtask');
     }
+
 }

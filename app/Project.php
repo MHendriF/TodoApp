@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
 
 class Project extends Model
 {
@@ -15,7 +14,7 @@ class Project extends Model
 	protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'user_id', 'name', 'slug', 'desc', 'duedate', 'completed',
+        'name', 'slug', 'desc', 'duedate', 'completed',
     ];
 
     // public function setDuedateAttribute($date)
@@ -30,12 +29,22 @@ class Project extends Model
 
 	public function tasks()
     {
-    	return $this->hasMany('App\Task');
+        return $this->hasMany('App\Task');
     }
 
     public function subtasks()
     {
     	return $this->hasManyThrough('App\Subtask', 'App\Task');
     }
+
+    // public static function projects()
+    // {
+    //     return static Auth::user()->projects()->orderby('created_at')->get();
+    // }
+     
+    // public static function projectsTrashed()
+    // {
+    //     return static Auth::user()->projects()->onlyTrashed()->get();
+    // } 
 
 }

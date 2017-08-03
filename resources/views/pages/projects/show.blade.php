@@ -26,8 +26,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="pull-right">
                 <a href="#createtasks" class="btn btn-sm btn-green" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;New Task</a>
-                @if(count($projectsTrashed))
-                    <a href="{{ url('projects/trashed') }}" class="btn btn-sm btn-red"><i class="fa fa-trash"></i>&nbsp;Trash&nbsp;<span class="badge">{{ count($projectsTrashed) }}</span></a>
+                @if(count($tasksTrashed))
+                    <a href="{{ url('projects/trashed') }}" class="btn btn-sm btn-red"><i class="fa fa-trash"></i>&nbsp;Trash&nbsp;<span class="badge">{{ count($tasksTrashed) }}</span></a>
                 @endif
             </div>
         </div>
@@ -63,17 +63,17 @@
                                     <td class="col-sm-3">
                                         <ul class="list-inline col-sm-12">
                                             <li class="col-sm-3">
-                                                {!! Form::open(['method' => 'POST', 'action' => ['ProjectController@edit', $task->slug], 'class' => 'form-horizontal']) !!}
+                                                {!! Form::open(['method' => 'POST', 'action' => ['TaskController@edit', $project->slug, $task->slug], 'class' => 'form-horizontal']) !!}
                                                     @include('partials.forms.edit.tasks', ['submitTextButton' => 'Edit'])
                                                 {!! Form::close() !!}
                                             </li>
                                             <li class="col-sm-3">
-                                                {!! Form::open(['method' => 'DELETE', 'action' => ['ProjectController@hide', $task->slug], 'class' => 'form-horizontal']) !!}
+                                                {!! Form::open(['method' => 'DELETE', 'action' => ['TaskController@hide', $project->slug, $task->slug], 'class' => 'form-horizontal']) !!}
                                                     @include('partials.forms.delete', ['submitTextButton' => 'Hide'])
                                                 {!! Form::close() !!}
                                             </li>
                                             <li class="col-sm-3">
-                                                {!! Form::model($task, ['method' => 'PATCH', 'action' => ['ProjectController@completed', $task->slug], 'class' => 'form-horizontal']) !!}
+                                                {!! Form::model($task, ['method' => 'PATCH', 'action' => ['TaskController@completed', $project->slug, $task->slug], 'class' => 'form-horizontal']) !!}
                                                     <button type="submit" class="btn btn-xs btn-primary">{{ $task->completed == true ? 'Mark pending' : 'Mark complete' }}</button>
                                                 {!! Form::close() !!}
                                             </li>
@@ -85,16 +85,16 @@
                     </table>
                 </div>
             @else
-                <p>Sorry, no task found today, begin by creating by a <a href="#createtasks" class="" data-toggle="modal">new tasks.</a></p>
+                <p>Sorry, no task found today, begin by creating by a <a href="#createtasks" class="" data-toggle="modal">new task.</a></p>
             @endif
         </div>
     </div>
 </div>
 
-@include('pages.projects.modals.create.projects', ['submitTextButton' => 'Save'])
+@include('pages.projects.modals.create.tasks', ['submitTextButton' => 'Save'])
 
-@if(count($projects))
-    @include('pages.projects.modals.edit.projects', ['submitTextButton' => 'Update'])
+@if(count($tasks))
+    @include('pages.projects.modals.edit.tasks', ['submitTextButton' => 'Update'])
 @endif
 
 @stop

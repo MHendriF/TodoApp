@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row text-left">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-top-70">
-            <h2>Projects <span class="small pull-right">{{$today}} | {{$currenttime}}</span></h2>
+            <h2>Projects <span class="small pull-right">{{ $today }} | {{$currenttime}}</span></h2>
         </div>
     </div>
     <div class="row">

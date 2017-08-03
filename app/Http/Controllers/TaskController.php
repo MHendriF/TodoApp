@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
+
+use App\Http\Controllers\Controllers;
+use App\Http\Requests\TaskRequest;
+use Carbon\Carbon;
+use App\Project;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -33,9 +41,43 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Project $project, TaskRequest $request)
     {
-        //
+        if($request->ajax())
+        {
+            $slug = Str::slug($request->name);
+            $project->tasks()->create([
+                'name' => $request->name,
+                'slug' => $slug,
+                'desc' => $request->desc,
+                'duedate' => $request->duedate
+            ]);
+
+            $response = [
+                'msg' => 'Awesome! close this modal window by clicking top right corner.',
+            ];
+
+            return Response::json($response);
+        }
+        else
+        {
+            $slug = Str::slug($request->name);
+            $project->tasks()->create([
+                'name' => $request->name,
+                'slug' => $slug,
+                'desc' => $request->desc,
+                'duedate' => $request->duedate
+            ]);
+            // $list = Project::find($project->id);
+            // $task = new Task;
+            // $task->name = $request->name;
+            // $task->slug = $slug;
+            // $task->desc = $request->desc;
+            // $task->duedate = $request->duedate;
+            // $list->tasks()->save($task);
+
+            return redirect()->back()->with('message', 'Task ' . ucwords($request->name) . ' has been successfully created');
+        }
     }
 
     /**
@@ -55,9 +97,26 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function edit(Task $task)
+    public function edit(Project $project, Task $task, Request $request)
     {
-        //
+        if($request->ajax())
+        {
+            $response = [
+                'id' => $task->id,
+                'projectslug' => $project->slug,
+                'taskslug' => $task->slug,
+                'name' => $task->name,
+                'desc' => $task->desc,
+                'duedate' => $task->duedate
+            ];
+
+            return Response::json($response);
+        }
+        else
+        {
+            $tasks =  $project->task()->orderby('created_at')->get();
+            return view('pages.projects.home', compact('tasks', 'project', 'task'));
+        }
     }
 
     /**
@@ -67,9 +126,35 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(Project $project, Task $task, TaskRequest $request)
     {
-        //
+        if($request->ajax())
+        {
+            $slug = Str::slug($request->name);
+            $task->update([
+                'name' => $request->name,
+                'slug' => $slug,
+                'desc' => $request->desc,
+                'duedate' => $request->duedate
+            ]);
+
+            $response = [
+                'msg' => 'Awesome! close this modal window by clicking top right corner.',
+            ];
+            return Response::json($response);
+        }
+        else
+        {
+            $slug = Str::slug($request->name);
+            $task->update([
+                'name' => $request->name,
+                'slug' => $slug,
+                'desc' => $request->desc,
+                'duedate' => $request->duedate
+            ]);
+
+            return redirect()->back()->with('success', 'Task ' . ucwords($request->name) . ' has been successfully updated');
+        }
     }
 
     /**
@@ -81,5 +166,28 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+    }
+
+    public function completed(Project $project, Task $task)
+    {
+        if($task->completed == false)
+        {
+            $task->completed = true;
+            $task->update(['completed' => $task->completed]);
+            return redirect()->back()->with('success', 'Good Job Task marked as done!');
+
+        }
+        else
+        {
+            $task->completed = false;
+            $task->update(['completed' => $task->completed]);
+            return redirect()->back()->with('success', 'Task status changed to panding!');
+        }
+    }
+
+    public function hide(Project $project, Task $task)
+    {
+        $task->delete();
+        return redirect()->back()->with('success', 'Task ' . $task->name . ' has been successfully hidden');
     }
 }
