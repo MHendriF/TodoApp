@@ -5,6 +5,14 @@
 	</div>
 </div>
 
+{{-- <div class="form-group">
+	<div class="input-group">
+		<div class="input-group-addon">Slug</div>
+		{!! Form::text('slug', Input::old('slug'), ['class' => 'form-control', 'placeholder' => 'Slug Name']) !!}
+	</div>
+</div>
+ --}}
+
 <div class="form-group">
 	<div class="input-group">
 		<div class="input-group-addon">Description</div>

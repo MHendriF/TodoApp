@@ -33,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('projects', Auth::user()->projects()->orderby('created_at')->get());
         });
 
+        view()->composer('pages.projects.tasks.trashed', function ($view){
+            $view->with('tasksTrashed', Auth::user()->tasks()->onlyTrashed()->get());
+            $view->with('projects', Auth::user()->projects()->orderby('created_at')->get());
+        });
+
         view()->composer('*', function ($view){
             $view->with('user', Auth::user());
             $view->with('currenttime', Carbon::now()->format('h:i a'));

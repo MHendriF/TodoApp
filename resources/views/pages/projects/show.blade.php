@@ -27,7 +27,7 @@
             <div class="pull-right">
                 <a href="#createtasks" class="btn btn-sm btn-green" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;New Task</a>
                 @if(count($tasksTrashed))
-                    <a href="{{ url('projects/trashed') }}" class="btn btn-sm btn-red"><i class="fa fa-trash"></i>&nbsp;Trash&nbsp;<span class="badge">{{ count($tasksTrashed) }}</span></a>
+                    <a href="{{ url('tasks/trashed') }}" class="btn btn-sm btn-red"><i class="fa fa-trash"></i>&nbsp;Trash&nbsp;<span class="badge">{{ count($tasksTrashed) }}</span></a>
                 @endif
             </div>
         </div>
@@ -49,10 +49,10 @@
                                 <th>action</th>
                             </tr>
                         </thead>
-                        @foreach($tasks as $task)
+                        @foreach($tasks as $index => $task)
                             <tbody>
                                 <tr>
-                                    <td>{{ $task->id }}</td>
+                                    <td>{{ $index+1 }}</td>
                                     <td>{{ $task->name }}</td>
                                     <td>{{ $project->user->name }}</td>
                                     <td>{{ count($task->subtasks()->get()) }}</td>

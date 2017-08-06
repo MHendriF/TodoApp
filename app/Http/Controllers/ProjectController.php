@@ -78,6 +78,7 @@ class ProjectController extends Controller
     {
         $tasks = $project->tasks()->orderby('created_at')->get();
         return view('pages.projects.show', compact('project', 'tasks'));
+        //return view('pages.projects.show', compact('project','tasks','projects', 'today', 'currenttime', 'user', 'projectsTrashed'));
     }
 
     public function edit(Project $project, Request $request)
@@ -165,9 +166,9 @@ class ProjectController extends Controller
 
     public function trashed()
     {
-        //return view('pages.projects.trashed');
-        $tasktrashed = Auth::user()->tasks()->onlyTrashed()->get();
-        return $tasktrashed;
+        return view('pages.projects.trashed');
+        //$tasktrashed = Auth::user()->tasks()->onlyTrashed()->get();
+        //return $tasktrashed;
     }
 
     public function restoreall()
@@ -212,5 +213,11 @@ class ProjectController extends Controller
             return redirect()->back(); 
 
         }
+    }
+
+    public function test()
+    {
+        //return "teeeeee";
+        return view('pages.projects.trashed');
     }
 }

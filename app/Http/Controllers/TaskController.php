@@ -53,6 +53,8 @@ class TaskController extends Controller
                 'duedate' => $request->duedate
             ]);
 
+            // $project->tasks()->addTask(request(['name', 'slug', 'desc', 'duedate']));
+
             $response = [
                 'msg' => 'Awesome! close this modal window by clicking top right corner.',
             ];
@@ -68,6 +70,10 @@ class TaskController extends Controller
                 'desc' => $request->desc,
                 'duedate' => $request->duedate
             ]);
+
+            // $project->tasks()->addTask(
+            //     new Task (request(['name', 'slug', 'desc', 'duedate']))
+            // );
             // $list = Project::find($project->id);
             // $task = new Task;
             // $task->name = $request->name;
@@ -189,5 +195,23 @@ class TaskController extends Controller
     {
         $task->delete();
         return redirect()->back()->with('success', 'Task ' . $task->name . ' has been successfully hidden');
+    }
+
+    public function trashed(Project $project)
+    {
+        //return "teeeeee";
+        return view('pages.projects.tasks.trashed');
+    }
+
+    public function restore(Task $task)
+    {
+        $task->restore();
+        return redirect('tasks/trashed')->with('success', 'Task ' . $task->name . ' has been successfully restored');
+    }
+
+    public function deleteforever(Task $Task)
+    {
+        $task->forceDelete();
+        return redirect('tasks/trashed')->with('success', 'Task ' . $task->name . ' has been successfully deleted');
     }
 }

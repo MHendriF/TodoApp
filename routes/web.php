@@ -35,14 +35,20 @@ Route::group(['middleware' => 'auth'], function(){
 		return App\Project::onlyTrashed()->whereSlug($value)->first();
 	});
 
+	Route::bind('trashedtasks', function($value, $route){
+		return App\Task::onlyTrashed()->whereSlug($value)->first();
+	});
+
+	Route::get('projects/trashed', 'ProjectController@trashed');
+	Route::get('tasks/trashed', 'TaskController@trashed');
+	Route::get('projects/restoreall', 'ProjectController@restoreall');
 
 	Route::get('projects', 'ProjectController@index');
 	Route::get('projects/{projects}', 'ProjectController@show');
 
-	Route::get('projects/trashed', 'ProjectController@trashed');
-	Route::get('projects/restoreall', 'ProjectController@restoreall');
-
 	Route::delete('projects/{trashedprojects}/restore', 'ProjectController@restore');
+	Route::delete('tasks/{trashedtasks}restore', 'TaskController@restore');
+
 	Route::delete('projects/{trashedprojects}/deleteforever', 'ProjectController@deleteforever');
 
 	Route::post('projects/{projects}/edit', 'ProjectController@edit');
